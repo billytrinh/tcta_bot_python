@@ -1,8 +1,18 @@
 from fastapi import FastAPI
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(__file__))
+
+
+def application(environ, start_response):
+    start_response('200 OK', [('Content-Type', 'text/plain')])
+    message = 'It works!\n'
+    version = 'Python v' + sys.version.split()[0] + '\n'
+    response = '\n'.join([message, version])
+    return [response.encode()]
 
 app = FastAPI()
-
-
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
@@ -11,3 +21,7 @@ async def root():
 @app.get("/hello/{name}")
 async def say_hello(name: str):
     return {"message": f"Hello {name}"}
+
+
+
+
